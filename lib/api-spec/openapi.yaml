@@ -1,0 +1,349 @@
+openapi: 3.1.0
+info:
+  # Do not change the title, if the title changes, the import paths will be broken
+  title: Api
+  version: 0.1.0
+  description: Trenggalek All-In-One Platform API
+servers:
+  - url: /api
+    description: Base API path
+tags:
+  - name: health
+    description: Health operations
+  - name: wisata
+    description: Tempat wisata Trenggalek
+  - name: data
+    description: Data statistik Trenggalek
+paths:
+  /healthz:
+    get:
+      operationId: healthCheck
+      tags: [health]
+      summary: Health check
+      description: Returns server health status
+      responses:
+        "200":
+          description: Healthy
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/HealthStatus"
+
+  /wisata:
+    get:
+      operationId: listWisata
+      tags: [wisata]
+      summary: List all tempat wisata
+      responses:
+        "200":
+          description: List of wisata
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: "#/components/schemas/Wisata"
+
+  /wisata/{id}:
+    get:
+      operationId: getWisata
+      tags: [wisata]
+      summary: Get wisata by ID
+      parameters:
+        - name: id
+          in: path
+          required: true
+          schema:
+            type: integer
+      responses:
+        "200":
+          description: Wisata detail
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Wisata"
+
+  /wisata/featured:
+    get:
+      operationId: getFeaturedWisata
+      tags: [wisata]
+      summary: Get featured/highlight wisata
+      responses:
+        "200":
+          description: Featured wisata list
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: "#/components/schemas/Wisata"
+
+  /data/overview:
+    get:
+      operationId: getDataOverview
+      tags: [data]
+      summary: Get overview statistics of Trenggalek
+      responses:
+        "200":
+          description: Overview data
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/DataOverview"
+
+  /data/populasi:
+    get:
+      operationId: getDataPopulasi
+      tags: [data]
+      summary: Get population data per year
+      responses:
+        "200":
+          description: Population data
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: "#/components/schemas/PopulasiData"
+
+  /data/pembangunan:
+    get:
+      operationId: getDataPembangunan
+      tags: [data]
+      summary: Get development/infrastructure data
+      responses:
+        "200":
+          description: Development data
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: "#/components/schemas/PembangunanData"
+
+  /data/anggaran:
+    get:
+      operationId: getDataAnggaran
+      tags: [data]
+      summary: Get budget/anggaran allocation data
+      responses:
+        "200":
+          description: Budget data
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: "#/components/schemas/AnggaranData"
+
+  /data/kecamatan:
+    get:
+      operationId: getDataKecamatan
+      tags: [data]
+      summary: Get data per kecamatan
+      responses:
+        "200":
+          description: Per-kecamatan data
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: "#/components/schemas/KecamatanData"
+
+  /galeri:
+    get:
+      operationId: listGaleri
+      tags: [wisata]
+      summary: Get gallery photos of Trenggalek
+      responses:
+        "200":
+          description: Gallery photos
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: "#/components/schemas/GaleriPhoto"
+
+components:
+  schemas:
+    HealthStatus:
+      type: object
+      properties:
+        status:
+          type: string
+      required:
+        - status
+
+    Wisata:
+      type: object
+      properties:
+        id:
+          type: integer
+        nama:
+          type: string
+        deskripsi:
+          type: string
+        kategori:
+          type: string
+          enum: [pantai, air_terjun, gunung, budaya, religi, kuliner, alam]
+        kecamatan:
+          type: string
+        latitude:
+          type: number
+        longitude:
+          type: number
+        foto:
+          type: array
+          items:
+            type: string
+        highlight:
+          type: boolean
+        rating:
+          type: number
+        tiket_masuk:
+          type: string
+        jam_buka:
+          type: string
+        fasilitas:
+          type: array
+          items:
+            type: string
+      required:
+        - id
+        - nama
+        - deskripsi
+        - kategori
+        - kecamatan
+        - latitude
+        - longitude
+        - foto
+        - highlight
+        - rating
+
+    DataOverview:
+      type: object
+      properties:
+        total_penduduk:
+          type: integer
+        total_kecamatan:
+          type: integer
+        total_desa:
+          type: integer
+        luas_wilayah_km2:
+          type: number
+        apbd_total:
+          type: number
+        total_wisata:
+          type: integer
+        tahun:
+          type: integer
+      required:
+        - total_penduduk
+        - total_kecamatan
+        - total_desa
+        - luas_wilayah_km2
+        - apbd_total
+        - total_wisata
+        - tahun
+
+    PopulasiData:
+      type: object
+      properties:
+        tahun:
+          type: integer
+        total:
+          type: integer
+        laki_laki:
+          type: integer
+        perempuan:
+          type: integer
+        pertumbuhan_persen:
+          type: number
+      required:
+        - tahun
+        - total
+        - laki_laki
+        - perempuan
+        - pertumbuhan_persen
+
+    PembangunanData:
+      type: object
+      properties:
+        tahun:
+          type: integer
+        kategori:
+          type: string
+        nilai:
+          type: number
+        satuan:
+          type: string
+        keterangan:
+          type: string
+      required:
+        - tahun
+        - kategori
+        - nilai
+        - satuan
+        - keterangan
+
+    AnggaranData:
+      type: object
+      properties:
+        tahun:
+          type: integer
+        sektor:
+          type: string
+        alokasi_miliar:
+          type: number
+        realisasi_miliar:
+          type: number
+        persen_realisasi:
+          type: number
+      required:
+        - tahun
+        - sektor
+        - alokasi_miliar
+        - realisasi_miliar
+        - persen_realisasi
+
+    KecamatanData:
+      type: object
+      properties:
+        nama:
+          type: string
+        luas_km2:
+          type: number
+        jumlah_penduduk:
+          type: integer
+        jumlah_desa:
+          type: integer
+        kepadatan_per_km2:
+          type: number
+      required:
+        - nama
+        - luas_km2
+        - jumlah_penduduk
+        - jumlah_desa
+        - kepadatan_per_km2
+
+    GaleriPhoto:
+      type: object
+      properties:
+        id:
+          type: integer
+        url:
+          type: string
+        judul:
+          type: string
+        lokasi:
+          type: string
+        kategori:
+          type: string
+      required:
+        - id
+        - url
+        - judul
+        - lokasi
+        - kategori
