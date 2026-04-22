@@ -1,0 +1,9 @@
+name = "trenggalek-explorer-map"
+pages_build_output_dir = ".vercel/output/static"
+compatibility_date = "2024-04-05"
+compatibility_flags = ["nodejs_compat"]
+
+[[d1_databases]]
+binding = "DB"
+database_name = "trenggalek_db"
+database_id = "863de9a7-04a1-4cd0-b91a-2588071c8e29"

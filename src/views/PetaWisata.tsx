@@ -7,16 +7,20 @@ import L from "leaflet";
 import { MapPin, Star, Navigation } from "lucide-react";
 import { useListWisata, WisataKategori } from "@workspace/api-client-react";
 
-// Fix Leaflet default icon paths
-import iconRetinaUrl from 'leaflet/dist/images/marker-icon-2x.png';
-import iconUrl from 'leaflet/dist/images/marker-icon.png';
-import shadowUrl from 'leaflet/dist/images/marker-shadow.png';
-
-L.Icon.Default.mergeOptions({
-  iconRetinaUrl,
-  iconUrl,
-  shadowUrl,
-});
+// Fix Leaflet default icon paths - ONLY RUN IN BROWSER
+if (typeof window !== 'undefined') {
+  import('leaflet/dist/images/marker-icon-2x.png').then(iconRetinaUrl => {
+    import('leaflet/dist/images/marker-icon.png').then(iconUrl => {
+      import('leaflet/dist/images/marker-shadow.png').then(shadowUrl => {
+        L.Icon.Default.mergeOptions({
+          iconRetinaUrl: iconRetinaUrl.default,
+          iconUrl: iconUrl.default,
+          shadowUrl: shadowUrl.default,
+        });
+      });
+    });
+  });
+}
 
 export default function PetaWisata() {
   const { data: wisataList, isLoading } = useListWisata();

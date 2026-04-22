@@ -1,4 +1,4 @@
-import Data from "@/pages/Data";
+import Data from "@/views/Data";
 
 export default function Page() {
   return <Data />;

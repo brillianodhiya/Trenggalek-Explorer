@@ -190,7 +190,7 @@ export default function Home() {
             galeri?.map((photo, i) => (
               <motion.div 
                 key={photo.id}
-                className="min-w-[300px] md:min-w-[450px] aspect-[4/3] rounded-2xl overflow-hidden relative flex-shrink-0 snap-center group"
+                className="min-w-[300px] md:min-w-[500px] h-[300px] md:h-[400px] rounded-2xl overflow-hidden relative flex-shrink-0 snap-center group"
                 initial={{ opacity: 0, x: 50 }}
                 whileInView={{ opacity: 1, x: 0 }}
                 viewport={{ once: true }}

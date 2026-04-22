@@ -1,6 +1,13 @@
-import WisataDetail from "@/pages/WisataDetail";
+"use client";
 
-export default async function Page({ params }: { params: Promise<{ id: string }> }) {
-  const { id } = await params;
+import dynamic from "next/dynamic";
+import { use } from "react";
+
+const WisataDetail = dynamic(() => import("@/views/WisataDetail"), {
+  ssr: false,
+});
+
+export default function Page({ params }: { params: Promise<{ id: string }> }) {
+  const { id } = use(params);
   return <WisataDetail id={id} />;
 }

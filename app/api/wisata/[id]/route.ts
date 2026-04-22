@@ -6,11 +6,12 @@ export const runtime = "edge";
 
 export async function GET(
   _request: Request,
-  { params }: { params: { id: string } }
+  { params }: { params: Promise<{ id: string }> }
 ) {
+  const { id } = await params;
   const { env } = getRequestContext();
   const db = getDb(env.DB);
-  const idNum = parseInt(params.id);
+  const idNum = parseInt(id);
 
   try {
     const results = await db.select().from(wisataTable).where(eq(wisataTable.id, idNum)).limit(1);
